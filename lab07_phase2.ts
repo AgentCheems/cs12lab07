@@ -12,7 +12,7 @@ searchbutton.addEventListener("click", () => {
         .then((gen1) => {
             const filtered = pipe(
                 gen1.pokemon_species,
-                Array.filter(s => gen1.startsWith(s.name, pkmn))
+                Array.filter(s => s.name.startsWith(pkmn))
             )
             const pkmnPromises = pipe(
                 filtered, 
@@ -40,13 +40,15 @@ searchbutton.addEventListener("click", () => {
                     const name = s.name.charAt(0).toUpperCase() + s.name.slice(1)
                     const types = pipe(
                         s.types,
-                        Array.map((t) => s.capitalize(t.type.name))
-                    );
+                        Array.map((t) => {
+                            const typeName = t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1) 
+                            return typeName
+                    })
+                )
                     const height = s.height / 10
                     const weight = s.weight / 10
                     const sprite = s.sprites.front_default
 
-                    info.innerHTML = ""
                     const infoWrapper = document.createElement("div")
                     infoWrapper.style.display = "flex"
                     infoWrapper.style.alignItems = "center"
@@ -77,7 +79,7 @@ searchbutton.addEventListener("click", () => {
                     infoDiv.append(displayName, displayTags, displayHeight, displayWeight)
 
                     infoWrapper.append(img, infoDiv)
-                    info.append(infoWrapper)
+                    grid.append(infoWrapper)
         })
     )
         info.appendChild(grid)
